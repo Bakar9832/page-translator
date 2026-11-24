@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Page Translator (personal)",
+  "name": "Page Translator",
   "version": "1.0.0",
   "description": "Translates web pages to English, including pages Chrome's built-in translate refuses.",
   "minimum_chrome_version": "138",
