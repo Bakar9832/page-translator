@@ -1,0 +1,142 @@
+<!doctype html>
+<!-- lang="en" on purpose: the content is Swedish, Chrome's own translate is fooled by this. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="google" content="notranslate">
+  <title>Testsida för översättning</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 860px; margin: 24px auto; padding: 0 16px; line-height: 1.5; }
+    section { border: 1px solid #ccc; border-radius: 8px; padding: 12px 16px; margin: 16px 0; }
+    .tag { font: 12px monospace; color: #888; float: right; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
+    iframe { width: 100%; height: 190px; border: 1px dashed #999; }
+    pre, code { background: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Välkommen till leverantörsportalen</h1>
+
+  <section>
+    <span class="tag">plain paragraphs · html lang="en" mismatch · meta notranslate</span>
+    <p>Här kan du som leverantör hitta offentliga upphandlingar, ladda ner förfrågningsunderlag och lämna anbud elektroniskt.</p>
+    <p>Logga in med ditt användarnamn och lösenord. Om du har glömt ditt lösenord kan du begära ett nytt via länken nedan.</p>
+    <p>This paragraph is already in English and should be left unchanged by the extension.</p>
+    <p>Pris: 1 250,00 kr · 2025-03-14 · 42 %</p>
+  </section>
+
+  <section translate="no" class="notranslate">
+    <span class="tag">translate="no" + class="notranslate"</span>
+    <p>Den här delen är markerad som "översätt inte". Den översätts bara när inställningen "Ignore do-not-translate markers" är på.</p>
+  </section>
+
+  <section>
+    <span class="tag">skipped: code / pre / textarea / contenteditable</span>
+    <p>Kod ska inte översättas: <code>var hej = "världen";</code></p>
+    <pre>Förformaterad text ska lämnas orörd.</pre>
+    <textarea rows="2" cols="50" placeholder="Skriv din kommentar här">Text som användaren har skrivit ska inte ändras.</textarea>
+    <div contenteditable="true" style="border:1px dashed #aaa;padding:4px">Redigerbart område ska inte översättas.</div>
+  </section>
+
+  <section>
+    <span class="tag">table</span>
+    <table>
+      <thead><tr><th>Upphandling</th><th>Myndighet</th><th>Sista anbudsdag</th></tr></thead>
+      <tbody>
+        <tr><td>Städtjänster för skolor</td><td>Göteborgs stad</td><td>2025-04-30</td></tr>
+        <tr><td>Snöröjning och halkbekämpning</td><td>Trafikverket</td><td>2025-05-15</td></tr>
+        <tr><td>Konsulttjänster inom IT-säkerhet</td><td>Försäkringskassan</td><td>2025-06-01</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <span class="tag">form fields · placeholder · title · alt · buttons · select</span>
+    <form onsubmit="event.preventDefault(); document.getElementById('submitted').textContent = 'Skickat värde: ' + event.submitter.value;">
+      <p><label>Användarnamn <input type="text" name="user" placeholder="Ange ditt användarnamn" title="Ditt användarnamn hos oss"></label></p>
+      <p><label>Lösenord <input type="password" placeholder="Ange ditt lösenord"></label></p>
+      <p><label>Typ av leverantör
+        <select title="Välj typ av leverantör">
+          <option>Välj ett alternativ</option>
+          <option>Litet företag</option>
+          <option>Stort företag</option>
+          <optgroup label="Övriga">
+            <option>Ideell förening</option>
+          </optgroup>
+        </select></label></p>
+      <p>
+        <input type="submit" name="btnLogin" value="Logga in">
+        <input type="reset" value="Rensa formuläret">
+        <input type="button" value="Glömt lösenord" title="Begär ett nytt lösenord">
+        <button type="button" aria-label="Stäng dialogrutan">✕</button>
+      </p>
+      <p id="submitted" style="color:#666">(submit shows the posted button value here; it should be the original "Logga in")</p>
+      <img alt="Logotyp för leverantörsportalen" width="1" height="1" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">
+    </form>
+  </section>
+
+  <section>
+    <span class="tag">same-origin iframe</span>
+    <iframe src="frame.html"></iframe>
+  </section>
+
+  <section>
+    <span class="tag">cross-origin iframe (127.0.0.1) — Chrome translator blocked by Permissions Policy, expect Google</span>
+    <iframe id="crossFrame"></iframe>
+  </section>
+
+  <section>
+    <span class="tag">about:blank iframe written by script</span>
+    <iframe id="blankFrame"></iframe>
+  </section>
+
+  <section>
+    <span class="tag">open + closed shadow DOM</span>
+    <div id="openHost"></div>
+    <div id="closedHost"></div>
+  </section>
+
+  <section>
+    <span class="tag">injected after 3 s · UpdatePanel-style replacement · text change</span>
+    <div id="late"><em>(väntar på innehåll…)</em></div>
+    <div id="panel"><p>Panelens ursprungliga innehåll.</p></div>
+    <button type="button" id="postback">Simulera postback (ersätt panelen)</button>
+    <p>Status: <span id="ticker">Ansluter till servern</span></p>
+  </section>
+
+  <script>
+    // Cross-origin frame: localhost <-> 127.0.0.1 are different origins.
+    const otherHost = location.hostname === 'localhost' ? '127.0.0.1' : 'localhost';
+    document.getElementById('crossFrame').src = `${location.protocol}//${otherHost}:${location.port}/frame.html`;
+
+    // about:blank frame filled from the parent (like many ASP.NET / legacy editors).
+    const blank = document.getElementById('blankFrame').contentDocument;
+    blank.body.innerHTML = '<p style="font-family:system-ui">Den här texten skrevs in i en tom iframe (about:blank) av sidans skript.</p>';
+
+    // Shadow DOM: open root is translated; closed root is a known limitation.
+    document.getElementById('openHost').attachShadow({ mode: 'open' }).innerHTML =
+      '<p style="color:#2563eb">Text i en öppen shadow root ska översättas.</p>';
+    document.getElementById('closedHost').attachShadow({ mode: 'closed' }).innerHTML =
+      '<p style="color:#999">Text i en stängd shadow root kan inte nås (känd begränsning).</p>';
+
+    // AJAX-style content after 3 seconds.
+    setTimeout(() => {
+      document.getElementById('late').innerHTML =
+        '<h3>Nya upphandlingar</h3><ul><li>Inköp av kontorsmaterial till kommunen</li><li>Ramavtal för transporttjänster</li></ul>' +
+        '<input placeholder="Sök bland upphandlingar">';
+    }, 3000);
+
+    // UpdatePanel-style: replace a whole region's HTML.
+    let n = 0;
+    document.getElementById('postback').onclick = () => {
+      n++;
+      document.getElementById('panel').innerHTML =
+        `<p>Panelen har uppdaterats från servern (${n} gånger).</p><p>Inga nya meddelanden.</p>`;
+    };
+
+    // Page code changing an existing text node.
+    setTimeout(() => { document.getElementById('ticker').firstChild.data = 'Ansluten till servern'; }, 5000);
+  </script>
+</body>
+</html>

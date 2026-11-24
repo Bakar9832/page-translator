@@ -1,0 +1,88 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1f2328;
+  --muted: #656d76;
+  --border: #d0d7de;
+  --card: #f6f8fa;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --error-bg: #ffebe9;
+  --error-fg: #a40e26;
+  --info-bg: #ddf4ff;
+  --info-fg: #0a3069;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c2128;
+    --fg: #e6edf3;
+    --muted: #9198a1;
+    --border: #444c56;
+    --card: #22272e;
+    --error-bg: #3d1a1d;
+    --error-fg: #ffa198;
+    --info-bg: #102a44;
+    --info-fg: #a5d6ff;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  width: 320px;
+  margin: 0;
+  padding: 12px;
+  font: 13px/1.4 system-ui, "Segoe UI", sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+}
+header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+h1 { font-size: 15px; margin: 0; }
+
+.row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 6px 0; cursor: pointer; }
+.row.check { justify-content: flex-start; }
+.toggle { padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-weight: 600; }
+
+/* Checkbox styled as a switch */
+input[role="switch"] {
+  appearance: none; width: 34px; height: 20px; border-radius: 10px; margin: 0;
+  background: var(--border); position: relative; cursor: pointer; transition: background .15s;
+  flex-shrink: 0;
+}
+input[role="switch"]::after {
+  content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px;
+  border-radius: 50%; background: #fff; transition: left .15s;
+}
+input[role="switch"]:checked { background: var(--accent); }
+input[role="switch"]:checked::after { left: 16px; }
+
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; margin: 10px 0; }
+.kv { display: flex; justify-content: space-between; gap: 8px; margin: 2px 0; }
+.kv span { color: var(--muted); }
+.kv b { text-align: right; font-weight: 600; }
+
+.buttons { display: flex; gap: 8px; margin: 10px 0; }
+button {
+  flex: 1; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--card); color: var(--fg); font: inherit; font-weight: 600; cursor: pointer;
+}
+button:hover { border-color: var(--muted); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.primary:hover { background: var(--accent-hover); }
+button:disabled { opacity: .5; cursor: default; }
+button.link { flex: none; border: none; background: none; padding: 4px 0; color: var(--accent); font-weight: normal; }
+
+select { font: inherit; padding: 3px 4px; border-radius: 4px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); }
+.settings { border-top: 1px solid var(--border); padding-top: 6px; }
+
+.message { padding: 8px 10px; border-radius: 6px; margin: 8px 0; background: var(--info-bg); color: var(--info-fg); }
+.message.error { background: var(--error-bg); color: var(--error-fg); }
+
+.download { margin: 8px 0; }
+.download progress { width: 100%; }
+.download small { color: var(--muted); }
+
+details { margin-top: 8px; border-top: 1px solid var(--border); padding-top: 6px; }
+summary { cursor: pointer; color: var(--muted); }
+#diag { font-size: 12px; margin-top: 6px; }
+#diag .frame { padding: 4px 0; border-bottom: 1px dashed var(--border); word-break: break-all; }
+#diag .frame:last-child { border-bottom: none; }

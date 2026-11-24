@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ram med svenskt innehåll</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 12px; background: #fffbe6; }
+    h3 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <h3 id="heading">Ram: leverantörsinformation</h3>
+  <p>Den här texten finns i en iframe. Tillägget ska översätta den precis som huvudsidan, eftersom innehållsskriptet körs i alla ramar.</p>
+  <p>Registrera ditt företag för att få aviseringar om nya upphandlingar inom ditt område.</p>
+  <label>Organisationsnummer <input type="text" placeholder="Ange organisationsnummer"></label>
+  <button title="Skicka formuläret">Skicka</button>
+  <script>
+    // Label the frame so it's easy to see which origin it came from.
+    const cross = location.hostname === '127.0.0.1';
+    document.getElementById('heading').textContent =
+      cross ? 'Ram från annat ursprung: leverantörsinformation' : 'Ram från samma ursprung: leverantörsinformation';
+  </script>
+</body>
+</html>

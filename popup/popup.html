@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Page Translator</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="../icons/icon48.png" alt="" width="22" height="22">
+    <h1>Page Translator</h1>
+  </header>
+
+  <label class="row toggle">
+    <span>Auto-translate non-English pages</span>
+    <input type="checkbox" id="auto" role="switch">
+  </label>
+
+  <section class="card" aria-live="polite">
+    <div class="kv"><span>Page language</span><b id="lang">–</b></div>
+    <div class="kv"><span>Engine used</span><b id="engine">–</b></div>
+    <div class="kv"><span>State</span><b id="state">–</b></div>
+  </section>
+
+  <div id="download" class="download" hidden>
+    <div id="dlLabel">Downloading model…</div>
+    <progress id="dlProgress" max="1" value="0"></progress>
+    <small>Keep this popup open until the download finishes.</small>
+  </div>
+
+  <div id="message" class="message" hidden></div>
+
+  <div class="buttons">
+    <button id="translate" class="primary">Translate this page</button>
+    <button id="restore">Show original</button>
+  </div>
+
+  <section class="settings">
+    <label class="row">
+      <span>Engine</span>
+      <select id="engineSel">
+        <option value="auto">Auto (Chrome, then Google)</option>
+        <option value="chrome">Chrome built-in only</option>
+        <option value="google">Google only</option>
+      </select>
+    </label>
+    <label class="row check">
+      <input type="checkbox" id="ignore">
+      <span>Ignore "do not translate" markers</span>
+    </label>
+  </section>
+
+  <details>
+    <summary>Diagnostics</summary>
+    <div id="diag"></div>
+    <button id="clearCache" class="link">Clear translation cache</button>
+  </details>
+
+  <script src="../shared/settings.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
